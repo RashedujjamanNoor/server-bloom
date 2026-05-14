@@ -17,11 +17,56 @@ const createProduct = async (req, res) => {
 
 const getProducts = async (req, res) => {
   try {
-    const products = await Product.find();
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 8;
+
+    const search = req.query.search || "";
+    const category = req.query.category || "";
+    const minPrice = req.query.minPrice || 0;
+    const maxPrice = req.query.maxPrice || 999999;
+
+    const sort = req.query.sort || "newest";
+
+    const query = {
+      title: {
+        $regex: search,
+        $options: "i",
+      },
+
+      price: {
+        $gte: Number(minPrice),
+        $lte: Number(maxPrice),
+      },
+    };
+
+    if (category) {
+      query.category = category;
+    }
+
+    let sortOption = {};
+
+    if (sort === "low-high") {
+      sortOption.price = 1;
+    } else if (sort === "high-low") {
+      sortOption.price = -1;
+    } else if (sort === "oldest") {
+      sortOption.createdAt = 1;
+    } else {
+      sortOption.createdAt = -1;
+    }
+
+    const total = await Product.countDocuments(query);
+
+    const products = await Product.find(query)
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .sort(sortOption);
 
     res.status(200).json({
       success: true,
-      count: products.length,
+      total,
+      page,
+      totalPage: Math.ceil(total / limit),
       products,
     });
   } catch (error) {
