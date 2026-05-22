@@ -12,9 +12,12 @@ const {
   deleteProduct,
 } = require("../controllers/productController.js");
 
+//Admin
 router.post("/", protect, adminMiddleware, createProduct);
 router.put("/:id", protect, adminMiddleware, updateProduct);
 router.delete("/:id", protect, adminMiddleware, deleteProduct);
+
+//User
 router.get("/", getProducts);
 router.get("/:id", getSingleProduct);
 

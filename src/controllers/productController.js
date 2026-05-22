@@ -1,5 +1,6 @@
 const Product = require("../models/Product");
 
+// CREATE PRODUCT
 const createProduct = async (req, res) => {
   try {
     const product = await Product.create(req.body);
@@ -10,19 +11,25 @@ const createProduct = async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({
+      success: false,
       message: error.message,
     });
   }
 };
 
+// GET ALL PRODUCTS
 const getProducts = async (req, res) => {
   try {
     const page = Number(req.query.page) || 1;
+
     const limit = Number(req.query.limit) || 8;
 
     const search = req.query.search || "";
+
     const category = req.query.category || "";
+
     const minPrice = req.query.minPrice || 0;
+
     const maxPrice = req.query.maxPrice || 999999;
 
     const sort = req.query.sort || "newest";
@@ -71,17 +78,20 @@ const getProducts = async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({
+      success: false,
       message: error.message,
     });
   }
 };
 
+// GET SINGLE PRODUCT
 const getSingleProduct = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
 
     if (!product) {
       return res.status(404).json({
+        success: false,
         message: "Product not found",
       });
     }
@@ -92,20 +102,23 @@ const getSingleProduct = async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({
+      success: false,
       message: error.message,
     });
   }
 };
 
+// UPDATE PRODUCT
 const updateProduct = async (req, res) => {
   try {
     const product = await Product.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
+      returnDocument: "after",
       runValidators: true,
     });
 
     if (!product) {
       return res.status(404).json({
+        success: false,
         message: "Product not found",
       });
     }
@@ -116,17 +129,20 @@ const updateProduct = async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({
+      success: false,
       message: error.message,
     });
   }
 };
 
+// DELETE PRODUCT
 const deleteProduct = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
 
     if (!product) {
       return res.status(404).json({
+        success: false,
         message: "Product not found",
       });
     }
@@ -139,6 +155,7 @@ const deleteProduct = async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({
+      success: false,
       message: error.message,
     });
   }
