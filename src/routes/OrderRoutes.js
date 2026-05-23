@@ -17,6 +17,7 @@ const {
 //FOR USER
 router.post("/", protect, createOrder);
 router.get("/my-orders", protect, getMyOrders);
+
 router.put("/cancel/:id", protect, cancelOrder);
 
 // FOR ADMIN
