@@ -5,6 +5,7 @@ const authRoutes = require("./routes/authRoutes.js");
 const productRoutes = require("./routes/productRoutes.js");
 const orderRoutes = require("./routes/OrderRoutes.js");
 const adminRoutes = require("./routes/adminRoutes.js");
+const userRoutes = require("./routes/userRoutes.js");
 
 const app = express();
 
@@ -16,7 +17,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/admin", adminRoutes);
-
+app.use("/api/admin/users", userRoutes);
 app.get("/", (req, res) => {
   res.send("API Running");
 });
