@@ -12,7 +12,7 @@ const {
   getSingleOrder,
   updateOrderStatus,
   cancelOrder,
-} = require("../controllers/orderController.js");
+} = require("../controllers/OrderController.js");
 
 //FOR USER
 router.post("/", protect, createOrder);
